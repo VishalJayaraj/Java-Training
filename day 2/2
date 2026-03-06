@@ -1,0 +1,47 @@
+import java.util.Stack;
+
+class Solution {
+    public String simplifyPath(String path) {
+        Stack<String> stk = new Stack<>();
+
+        int i = 0;
+        while(i < path.length()) {
+
+            if(path.charAt(i) == '/') {
+                i++;
+                continue;
+            } else {
+                String temp = "";
+                int j = i;
+                while(j < path.length() && path.charAt(j) != '/') {
+                    temp = temp + path.charAt(j);
+                    j++;
+                }
+
+                i = j;
+
+                if(temp.equals("..")) {
+                    if(stk.isEmpty()) {
+                        continue;
+                    } else {
+                        stk.pop();
+                    }
+                } else if(temp.equals(".")) {
+                    continue;
+                } else {
+                    stk.push(temp);
+                }
+            }
+
+        }
+
+        if(stk.isEmpty()) return "/";
+
+        StringBuilder sb = new StringBuilder();
+        for(int k = 0; k < stk.size(); k++) {
+            sb.append("/").append(stk.get(k));
+        }
+
+        return sb.toString();
+    }
+}
